@@ -1,46 +1,5 @@
-var dataNormalizer = function(){
-    this.dataDescriptor = [
-        { 
-            "name" : "players",
-            "datas" : [
-                {
-                    "name" : "fleat",
-                    "relation" : "one",
-                    "from" : "fleats"
-                }
-            ]
-        },
-        {
-            "name" : "fleats",
-            "datas" : [
-                {
-                    "name" : "player",
-                    "relation" : "one",
-                    "from" : "players"
-                },
-                {
-                    "name" : "capitalShip",
-                    "relation" : "one",
-                    "from" : "ships"
-                },
-                {
-                    "name" : "deployedShips",
-                    "relation" : "array",
-                    "from" : "ships"
-                }
-            ]
-        },
-        {
-            "name" : "ships",
-            "datas" : [
-                {
-                    "name" : "fleat",
-                    "relation" : "one",
-                    "from" : "fleats"
-                }
-            ]
-        }
-    ];
+var dataNormalizer = function(dataDescriptor){
+    this.dataDescriptor = dataDescriptor;
 };
 
 dataNormalizer.prototype = {
@@ -49,12 +8,18 @@ dataNormalizer.prototype = {
         param.datas.forEach(function(data, ind){
             if(data.relation == "one")
             {
-                elem[data.name] = gameDatas[data.from][elem[data.name]];
+                if(elem[data.name] != null)
+                {
+                    elem[data.name] = gameDatas[data.from][elem[data.name]];
+                }
             }
             else if(data.relation == "array")
             {
                 elem[data.name].forEach(function(item, ind){
-                    elem[data.name][ind] = gameDatas[data.from][item];
+                    if(item != null)
+                    {
+                        elem[data.name][ind] = gameDatas[data.from][item];
+                    }
                 });
             }
         });
@@ -65,7 +30,10 @@ dataNormalizer.prototype = {
         var that = this;
         this.dataDescriptor.forEach(function(param, ind){
             newGameData[param.name].forEach(function(elem, ind){
-                that.normalizeItem(elem, param, newGameData);
+                if(elem != null)
+                {
+                    that.normalizeItem(elem, param, newGameData);
+                }
             });
         });
         return newGameData;
@@ -76,7 +44,10 @@ dataNormalizer.prototype = {
         this.dataDescriptor.forEach(function(param, ind){
             newGameData[param.name] = [];
             gameDatas[param.name].forEach(function(elem, ind){
-                newGameData[param.name][elem.id] = JSON.parse(JSON.stringify(elem));
+                if(elem != null)
+                {
+                    newGameData[param.name][elem.id] = JSON.parse(JSON.stringify(elem));
+                }
             });
         });
         return newGameData;

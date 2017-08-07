@@ -1,46 +1,5 @@
-var dataSerializer = function(){
-    this.dataDescriptor = [
-        { 
-            "name" : "players",
-            "datas" : [
-                {
-                    "name" : "fleat",
-                    "relation" : "one",
-                    "from" : "fleats"
-                }
-            ]
-        },
-        {
-            "name" : "fleats",
-            "datas" : [
-                {
-                    "name" : "player",
-                    "relation" : "one",
-                    "from" : "players"
-                },
-                {
-                    "name" : "capitalShip",
-                    "relation" : "one",
-                    "from" : "ships"
-                },
-                {
-                    "name" : "deployedShips",
-                    "relation" : "array",
-                    "from" : "ships"
-                }
-            ]
-        },
-        {
-            "name" : "ships",
-            "datas" : [
-                {
-                    "name" : "fleat",
-                    "relation" : "one",
-                    "from" : "fleats"
-                }
-            ]
-        }
-    ];
+var dataSerializer = function(dataDescriptor){
+    this.dataDescriptor = dataDescriptor;
 };
 
 dataSerializer.prototype = {
@@ -49,12 +8,18 @@ dataSerializer.prototype = {
         param.datas.forEach(function(data, ind){
             if(data.relation == "one")
             {
-                item[data.name] = item[data.name].id;
+                if(item[data.name] != null)
+                {
+                    item[data.name] = item[data.name].id;
+                }
             }
             else if(data.relation == "array")
             {
                 item[data.name].forEach(function(it, ind){
-                   item[data.name][ind] = it.id;
+                    if(it != null)
+                    {
+                        item[data.name][ind] = it.id;
+                    }
                 });
             }
         });
@@ -69,7 +34,10 @@ dataSerializer.prototype = {
         this.dataDescriptor.forEach(function(param, ind){
             newGameData[param.name] = [];
             gameDatas[param.name].forEach(function(elem, ind){
-                newGameData[param.name].push(that.serializeItem(elem, param, gameDatas));
+                if(elem != null)
+                {
+                    newGameData[param.name].push(that.serializeItem(elem, param, gameDatas));
+                }
             });
         });
         return newGameData;
@@ -79,12 +47,18 @@ dataSerializer.prototype = {
         param.datas.forEach(function(data, ind){
             if(data.relation == "one")
             {
-                elem[data.name] = gameDatas[data.from][elem[data.name]];
+                if(elem[data.name] != null)
+                {
+                    elem[data.name] = gameDatas[data.from][elem[data.name]];
+                }
             }
             else if(data.relation == "array")
             {
                 elem[data.name].forEach(function(item, ind){
-                    elem[data.name][ind] = gameDatas[data.from][item];
+                    if(item != null)
+                    {
+                        elem[data.name][ind] = gameDatas[data.from][item];
+                    }
                 });
             }
         });

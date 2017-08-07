@@ -2,10 +2,7 @@ var preload = function(game){}
 
 preload.prototype = {
 	preload: function(){ 
-                //clearGameCache(this.game);
                 this.game.load.json('casemap', 'assets/cases.json');
-                this.game.load.json('player1', 'assets/player1.json');
-                this.game.load.json('player2', 'assets/player2.json');
                 this.game.load.image('squad', 'assets/squad.png');
                 this.game.load.spritesheet('button', 'assets/nextButton.PNG', 125, 55);
                 this.game.load.image('space', 'assets/deep-space.jpg');
@@ -15,7 +12,6 @@ preload.prototype = {
 	},
         create: function(){
                 this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'space');
-                this.gameController.setCaseTable(createCases(this.game.cache.getJSON('casemap')));
 	},
         update : function()
         {
