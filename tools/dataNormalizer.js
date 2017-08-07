@@ -3,14 +3,14 @@ var dataNormalizer = function(dataDescriptor){
 };
 
 dataNormalizer.prototype = {
-    normalizeItem : function(elem, param, gameDatas)
+    normalizeItem : function(elem, param, dat)
     {
         param.datas.forEach(function(data, ind){
             if(data.relation == "one")
             {
                 if(elem[data.name] != null)
                 {
-                    elem[data.name] = gameDatas[data.from][elem[data.name]];
+                    elem[data.name] = dat[data.from][elem[data.name]];
                 }
             }
             else if(data.relation == "array")
@@ -18,15 +18,15 @@ dataNormalizer.prototype = {
                 elem[data.name].forEach(function(item, ind){
                     if(item != null)
                     {
-                        elem[data.name][ind] = gameDatas[data.from][item];
+                        elem[data.name][ind] = dat[data.from][item];
                     }
                 });
             }
         });
     },
-    normalize : function(gameDatas)
+    normalize : function(dat)
     {
-        var newGameData = this.chargeIndex(gameDatas);
+        var newGameData = this.chargeIndex(dat);
         var that = this;
         this.dataDescriptor.forEach(function(param, ind){
             newGameData[param.name].forEach(function(elem, ind){
@@ -38,12 +38,12 @@ dataNormalizer.prototype = {
         });
         return newGameData;
     }, 
-    chargeIndex : function(gameDatas)
+    chargeIndex : function(dat)
     {
         var newGameData = {};
         this.dataDescriptor.forEach(function(param, ind){
             newGameData[param.name] = [];
-            gameDatas[param.name].forEach(function(elem, ind){
+            dat[param.name].forEach(function(elem, ind){
                 if(elem != null)
                 {
                     newGameData[param.name][elem.id] = JSON.parse(JSON.stringify(elem));

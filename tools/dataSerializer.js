@@ -3,7 +3,7 @@ var dataSerializer = function(dataDescriptor){
 };
 
 dataSerializer.prototype = {
-    serializeItem : function(item, param, gameDatas)
+    serializeItem : function(item, param, dat)
     {
         param.datas.forEach(function(data, ind){
             if(data.relation == "one")
@@ -24,32 +24,32 @@ dataSerializer.prototype = {
             }
         });
         var newItem = JSON.parse(JSON.stringify(item));
-        this.normalizeItem(item, param, gameDatas);
+        this.normalizeItem(item, param, dat);
         return newItem;
     },
-    serialize : function(gameDatas)
+    serialize : function(dat)
     {
         var that = this;
         var newGameData = {};
         this.dataDescriptor.forEach(function(param, ind){
             newGameData[param.name] = [];
-            gameDatas[param.name].forEach(function(elem, ind){
+            dat[param.name].forEach(function(elem, ind){
                 if(elem != null)
                 {
-                    newGameData[param.name].push(that.serializeItem(elem, param, gameDatas));
+                    newGameData[param.name].push(that.serializeItem(elem, param, dat));
                 }
             });
         });
         return newGameData;
     },
-    normalizeItem : function(elem, param, gameDatas)
+    normalizeItem : function(elem, param, dat)
     {
         param.datas.forEach(function(data, ind){
             if(data.relation == "one")
             {
                 if(elem[data.name] != null)
                 {
-                    elem[data.name] = gameDatas[data.from][elem[data.name]];
+                    elem[data.name] = dat[data.from][elem[data.name]];
                 }
             }
             else if(data.relation == "array")
@@ -57,7 +57,7 @@ dataSerializer.prototype = {
                 elem[data.name].forEach(function(item, ind){
                     if(item != null)
                     {
-                        elem[data.name][ind] = gameDatas[data.from][item];
+                        elem[data.name][ind] = dat[data.from][item];
                     }
                 });
             }
