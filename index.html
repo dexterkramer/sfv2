@@ -1,0 +1,117 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+	<title></title>
+    <script type="text/javascript" src="bower_components\jquery\dist\jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components\bootstrap\dist\js\bootstrap.min.js"></script>
+    <script type="text/javascript" src="bower_components\phaser\build\phaser.min.js"></script>
+    <script type="text/javascript" src="/eureca.js"></script>
+
+    <script type="text/javascript" src="client/client.js"></script>
+    <script type="text/javascript" src="tools/dataNormalizer.js"></script>
+    <script type="text/javascript" src="tools/dataSerializer.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<button id="connect" > connect </button>
+<button id="play" style="display:none;" > play </button>
+<div id="game" ></div>
+<script type="text/javascript">
+
+//var game = launchGame();
+$(document).ready(function() {
+    var client = null;
+    var server = null;
+    $("#connect").click(function(elem){
+        client = eurecaClientSetup(function(proxy){
+            server = proxy;
+            $("#connect").css('display', 'none');
+            $("#play").css('display', 'block');
+        });
+    });
+
+
+    var datas = {
+        players : [
+            {
+                name : "toto",
+                id : 11,
+                fleat : 11
+            },
+            {
+                name : "tutu",
+                id : 12,
+                fleat : 12
+            },
+        ],
+        fleats : [
+            {
+                id : 11,
+                player : 11,
+                capitalShip : 11,
+                deployedShips : [
+                    11,
+                    13
+                ]
+            },
+            {
+                id : 12,
+                player : 12,
+                capitalShip : 12,
+                deployedShips : [
+                    12,
+                    14
+                ]
+            }
+        ],
+        ships : [
+            {
+                id : 11,
+                fleat : 11
+            },
+            {
+                id : 12,
+                fleat : 12
+            },
+            {
+                id : 13,
+                fleat : 11
+            },
+            {
+                id : 14,
+                fleat : 12
+            }
+        ]
+    };
+
+    //console.log(JSON.parse(JSON.stringify(datas)));
+    var norma = new dataNormalizer();
+    var seria = new dataSerializer();
+    var res = norma.normalize(datas);
+    var res2 = seria.serialize(res);
+    var res3 = norma.normalize(res2);
+    console.log(res,res2,res3);
+/*
+    $("#play").click(function(elem){
+        if(client != null && server != null)
+        {
+            var gc = new gameController(client, server);
+            client.gameController = gc;
+            gc.launchGame('game');
+        }
+    });*/
+
+
+});  
+
+
+
+</script>
+
+</body>
+</html>
