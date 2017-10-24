@@ -32,10 +32,32 @@ eurecaServer.onConnect(function (conn) {
     console.log('New Client id=%s ', conn.id, conn.remoteAddress);
 });
 
-
-
 //detect client disconnection
 eurecaServer.onDisconnect(function (conn) {    
     console.log('Client disconnected ', conn.id);
 });
 
+
+
+
+
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+ 
+// Connection URL 
+/*var url = "mongodb://localhost:27017/db";
+// Use connect method to connect to the Server 
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected correctly to server");
+ 
+  db.close();
+});*/
+
+
+/*
+MongoClient.connect("mongodb://localhost:8000/db", function(error, db) {
+    if (error) return funcCallback(error);
+
+    console.log("Connecté à la base de données 'tutoriel'");
+});*/

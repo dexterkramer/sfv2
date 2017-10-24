@@ -1,0 +1,13 @@
+{
+	"object" : "ship",
+	"idField" : "ObjectId", 
+	"document" : null,
+	"links" : 
+	[
+		{
+			"field" : "fleat",
+			"object" : "fleat",
+			"relation" : "single"
+		}
+	]
+}

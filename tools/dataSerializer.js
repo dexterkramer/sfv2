@@ -2,6 +2,8 @@ var dataSerializer = function(dataDescriptor){
     this.dataDescriptor = dataDescriptor;
 };
 
+// Stoquer tout en plat avec les références. quand modif en bdd, updater tout les object dont l'id correspond dans toute la base.
+
 dataSerializer.prototype = {
     serializeItem : function(item, param, dat)
     {
@@ -30,17 +32,17 @@ dataSerializer.prototype = {
     serialize : function(dat)
     {
         var that = this;
-        var newGameData = {};
+        var newData = {};
         this.dataDescriptor.forEach(function(param, ind){
-            newGameData[param.name] = [];
+            newData[param.name] = [];
             dat[param.name].forEach(function(elem, ind){
                 if(elem != null)
                 {
-                    newGameData[param.name].push(that.serializeItem(elem, param, dat));
+                    newData[param.name].push(that.serializeItem(elem, param, dat));
                 }
             });
         });
-        return newGameData;
+        return newData;
     },
     normalizeItem : function(elem, param, dat)
     {
@@ -63,5 +65,9 @@ dataSerializer.prototype = {
             }
         });
     }
+}
 
+
+function isArray(what) {
+    return Object.prototype.toString.call(what) === '[object Array]';
 }

@@ -1,0 +1,22 @@
+{
+	"object" : "fleat",
+	"idField" : "ObjectId", 
+	"links" : 
+	[
+		{
+			"field" : "deployedShips",
+			"object" : "ship",
+			"relation" : "array"
+		},
+		{
+			"field" : "player",
+			"object" : "player",
+			"relation" : "single"
+		},
+		{
+			"field" : "capitalShip",
+			"relation" : "single",
+			"object" : "ship"
+		}
+	]
+}

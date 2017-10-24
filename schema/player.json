@@ -1,0 +1,13 @@
+{
+	"object" : "player",
+	"idField" : "ObjectId",
+	"document" : "player",
+	"links" : 
+	[
+		{
+			"field" : "fleats",
+			"object" : "fleat",
+			"relation" : "array"
+		}
+	]
+}
