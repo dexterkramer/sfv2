@@ -68,10 +68,11 @@ mongoTranslator.prototype = {
 	},
 	save : function(extract)
 	{
-		this.tmpDataManager.emptyDatas();
-		this.tmpDataManager.add(extract);
-		this.schema.forEach(function(param, ind){
-			if(typeof extract[param.object] != 'undefined' && extract[param.object] != null && typeof this.mixedSchema[param.object] != 'undefined' && this.mixedSchema[param.object] != null)
+        var that = this;
+		that.tmpDataManager.emptyDatas();
+		that.tmpDataManager.add(extract);
+		that.schema.forEach(function(param, ind){
+			if(typeof extract[param.object] != 'undefined' && extract[param.object] != null && typeof that.mixedSchema[param.object] != 'undefined' && that.mixedSchema[param.object] != null)
 			{
 				 
 			}

@@ -126,38 +126,39 @@ dataManager.prototype = {
     }, 
 	extract : function(object, returnDatabase, param)
 	{
+		var that = this;
 		if(typeof returnDatabase == 'undefined')
 		{
 			var returnDatabase = {};
 		}
 		if(typeof param == 'undefined')
 		{
-			var param = this.getParamFromObject(object);
+			var param = that.getParamFromObject(object);
 		}
 		
-		if(objType != null)
+		if(typeof returnDatabase[param.object] == 'undefined')
 		{
-			if(typeof returnDatabase[param.object][object[param.idField]] == 'undefined' || returnDatabase[param.object][object[param.idField]] == null)
-			{
-				returnDatabase[param.object][object[param.idField]] = object;
-				param.links.forEach(function(link, ind){
-					if(link.relation == 'single' )
-					{
-						this.extract(object[link.object.object], returnDatabase, link.object);
-					}
-					else if(link.relation == 'array' )
-					{
-						object[link.object.object].forEach(function(obj, ind){
-							this.extract(obj, returnDatabase, link.object);
-						});
-					}
-				});
-			}
-			else
-			{
-				return returnDatabase;
-			}
+			returnDatabase[param.object] = [];
 		}
+		if(typeof returnDatabase[param.object][object[param.idField]] == 'undefined' || returnDatabase[param.object][object[param.idField]] == null)
+		{
+			returnDatabase[param.object][object[param.idField]] = object;
+			param.links.forEach(function(link, ind){
+				if(link.relation == 'single' )
+				{
+					that.extract(object[link.field], returnDatabase, link.object);
+				}
+				else if(link.relation == 'array' )
+				{
+
+					object[link.field].forEach(function(obj, ind){
+						that.extract(obj, returnDatabase, link.object);
+					});
+				}
+			});
+		}
+
+		return returnDatabase;
 	},
 	getParamFromObject : function(object)
 	{
@@ -199,12 +200,9 @@ dataManager.prototype = {
 						{
 							newIndexes[param.object] = [];
 						}
-						that.datas[param.object][elem[param.idField]] = JSON.parse(JSON.stringify(elem));
+						that.datas[param.object][elem[param.idField]] = elem;//JSON.parse(JSON.stringify(elem));
 						newIndexes[param.object].push(elem[param.idField]);
-						if(typeof that.datas[param.object][elem[param.idField]] == 'undefined')
-						{
-							that.objectByType.push({param : param, object : that.datas[param.object][elem[param.idField]] });
-						}
+						that.objectByType.push({param : param, object : that.datas[param.object][elem[param.idField]] });
 					}
 				});
 			}
@@ -215,7 +213,7 @@ dataManager.prototype = {
     {	
 		var that = this;
         param.links.forEach(function(link, ind){
-            if(link.relation == "one")
+            if(link.relation == "single")
             {
                 if(elem[link.field] != null)
                 {

@@ -142,6 +142,7 @@ $(document).ready(function() {
     var db = new dataManager(translator);
     db.add(datas);
     console.log(db.datas);
+    console.log(db.extract(datas.datas.player[0]));
     //console.log(JSON.parse(JSON.stringify(datas)));
    /* var norma = new dataNormalizer(datas.schema);
     var seria = new dataSerializer(datas.schema);
